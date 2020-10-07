@@ -1,0 +1,35 @@
+\RequirePackage{shellesc}                % implement \write18
+
+\RequirePackage{pdftexcmds}              % fake \pdfshellescape so
+\makeatletter                            % standalone knows about it
+  \let\pdfshellescape\pdf@shellescape
+\makeatother
+
+\RequirePackage{luatex85}
+\documentclass[tikz, convert={outfile=\jobname.svg}]{standalone}
+\usetikzlibrary{arrows, positioning, quotes, graphs, graphdrawing, fit, topaths}
+\usegdlibrary{force}
+
+\begin{document}
+	\tikz [ node distance=1.5cm,
+			block/.style={draw, rectangle},
+			every edge quotes/.append style={font=\tiny, rectangle}]{
+		\node (router) [block] {Router (8)};
+		\node (ipCamera) [block, below=of router] {IP Camera (2)};
+		\node (dataServer) [block, left=of ipCamera] {Data Server (1)};
+		\node (rpi) [block, right=of ipCamera] {Raspberry Pi 4 (3)};
+		\node (irCamera) [block, right=of rpi] {Pi IR Camera (4)};
+		\node (soundCard) [block, below=of irCamera] {USB Sound Card (5)};
+		\node (microphone) [block, right=of soundCard] {Microphone (6)};
+		\node (nano) [block, below=of rpi] {Arduino Nano BLE Sense (7)};
+
+		\draw (router) 		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (ipCamera)
+					   		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (dataServer)
+					   		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (rpi)
+			  (rpi)    		edge[stealth'-stealth', "CSI (10)"] (irCamera)
+			  		   		edge[stealth'-stealth', "BLE (11)"] (nano)
+			  		   		edge[stealth'-stealth', "USB (12)"] (soundCard)
+			  (soundCard)	edge[stealth'-stealth', "Coax (13)"] (microphone)
+		;
+	}
+\end{document}

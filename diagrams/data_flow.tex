@@ -1,0 +1,31 @@
+\RequirePackage{shellesc}                % implement \write18
+
+\RequirePackage{pdftexcmds}              % fake \pdfshellescape so
+\makeatletter                            % standalone knows about it
+  \let\pdfshellescape\pdf@shellescape
+\makeatother
+
+\RequirePackage{luatex85}
+\documentclass[tikz, convert={outfile=\jobname.svg}]{standalone}
+\usetikzlibrary{arrows, positioning, quotes, graphs, graphdrawing, fit, topaths}
+\usegdlibrary{force}
+
+\begin{document}
+	\tikz [ node distance=1.5cm,
+			block/.style={draw, rectangle},
+			every edge quotes/.append style={font=\tiny, rectangle}]{
+		\node (dataServer) [block] {Data Server (1)};
+		\node (ipCamera) [block, below left=of dataServer] {IP Camera (2)};
+		\node (rpi) [block, below right=of dataServer] {Raspberry Pi 4 (3)};
+		\node (irCamera) [block, below right=of rpi] {Pi IR Camera (4)};
+		\node (microphone) [block, below =of rpi] {Microphone (5)};
+		\node (nano) [block, below left=of rpi] {Arduino Nano BLE Sense (6)};
+
+		\draw (dataServer) 	edge[stealth'-, "Video Stream (7)"] (ipCamera)
+					   		edge[stealth'-, "Packetized Video Stream + IMU Data (8)"] (rpi)
+			  (rpi)    		edge[stealth'-, "Video Stream (9)"] (irCamera)
+			  		   		edge[stealth'-, "Packetized IMU Data (10)"'] (nano)
+			  		   		edge[stealth'-, "Raw Audio (11)"] (microphone)
+		;
+	}
+\end{document}
