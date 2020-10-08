@@ -11,7 +11,7 @@
 \usegdlibrary{force}
 
 \begin{document}
-	\tikz [ node distance=1.5cm,
+	\tikz [ node distance=2cm,
 			block/.style={draw, rectangle},
 			every edge quotes/.append style={font=\tiny, rectangle}]{
 		\node (router) [block] {Router (8)};
@@ -19,9 +19,9 @@
 		\node (dataServer) [block, left=of ipCamera] {Data Server (1)};
 		\node (rpi) [block, right=of ipCamera] {Raspberry Pi 4 (3)};
 		\node (irCamera) [block, right=of rpi] {Pi IR Camera (4)};
-		\node (soundCard) [block, below=of irCamera] {USB Sound Card (5)};
+		\node (soundCard) [block, below=of rpi] {USB Sound Card (5)};
 		\node (microphone) [block, right=of soundCard] {Microphone (6)};
-		\node (nano) [block, below=of rpi] {Arduino Nano BLE Sense (7)};
+		\node (nano) [block, above right=of rpi] {Arduino Nano BLE Sense (7)};
 
 		\draw (router) 		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (ipCamera)
 					   		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (dataServer)
@@ -31,5 +31,8 @@
 			  		   		edge[stealth'-stealth', "USB (12)"] (soundCard)
 			  (soundCard)	edge[stealth'-stealth', "Coax (13)"] (microphone)
 		;
+		\node (vibeUnit) [block, fit=(nano), label={[anchor=south west]north west:Vibration Sensor Unit (14)}] {};
+		\node (onBoxUnit) [block, fit=(rpi) (irCamera) (microphone) (soundCard), label={[anchor=north west]south west:On-Box Sensor Unit (15)}] {};
+		\node (remoteUnit) [block, fit=(ipCamera), label={[anchor=north west]south west:Remote Sensor Unit (16)}] {};
 	}
 \end{document}

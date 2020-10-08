@@ -11,7 +11,7 @@
 \usegdlibrary{force}
 
 \begin{document}
-	\tikz [ node distance=1.5cm,
+	\tikz [ node distance=2cm,
 			block/.style={draw, rectangle},
 			every edge quotes/.append style={font=\tiny, rectangle}]{
 		\node (dataServer) [block] {Data Server (1)};
@@ -27,5 +27,9 @@
 			  		   		edge[stealth'-, "Packetized IMU Data (10)"'] (nano)
 			  		   		edge[stealth'-, "Raw Audio (11)"] (microphone)
 		;
+
+		\node (vibeUnit) [block, fit=(nano), label={[anchor=north west]south west:Vibration Sensor Unit (12)}] {};
+		\node (onBoxUnit) [block, fit=(rpi) (irCamera) (microphone), label={[anchor=north west]south west:On-Box Sensor Unit (13)}] {};
+		\node (remoteUnit) [block, fit=(ipCamera), label={[anchor=north west]south west:Remote Sensor Unit (14)}] {};
 	}
 \end{document}
