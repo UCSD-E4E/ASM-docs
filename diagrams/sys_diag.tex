@@ -15,7 +15,8 @@
 			block/.style={draw, rectangle},
 			every edge quotes/.append style={font=\tiny, rectangle}]{
 		\node (router) [block] {Router (8)};
-		\node (ipCamera) [block, below=of router] {IP Camera (2)};
+		\node (rpi1) [block, below=of router] {Raspberry Pi 4 (17)};
+		\node (ipCamera) [block, below=of rpi1] {IP Camera (2)};
 		\node (dataServer) [block, left=of ipCamera] {Data Server (1)};
 		\node (rpi) [block, right=of ipCamera] {Raspberry Pi 4 (3)};
 		\node (irCamera) [block, right=of rpi] {Pi IR Camera (4)};
@@ -23,16 +24,17 @@
 		\node (microphone) [block, right=of soundCard] {Microphone (6)};
 		\node (nano) [block, above right=of rpi] {Arduino Nano BLE Sense (7)};
 
-		\draw (router) 		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (ipCamera)
-					   		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (dataServer)
-					   		edge[stealth'-stealth', "Ethernet/WiFi (9)"] (rpi)
+		\draw (router) 		edge[stealth'-stealth', "WiFi (9)"] (rpi1)
+					   		edge[stealth'-stealth', "Ethernet (9)"'] (dataServer)
+					   		edge[stealth'-stealth', "WiFi (9)"] (rpi)
 			  (rpi)    		edge[stealth'-stealth', "CSI (10)"] (irCamera)
 			  		   		edge[stealth'-stealth', "BLE (11)"] (nano)
 			  		   		edge[stealth'-stealth', "USB (12)"] (soundCard)
 			  (soundCard)	edge[stealth'-stealth', "Coax (13)"] (microphone)
+			  (rpi1)		edge[stealth'-stealth', "Ethernet + PoE (9)"] (ipCamera)
 		;
 		\node (vibeUnit) [block, fit=(nano), label={[anchor=south west]north west:Vibration Sensor Unit (14)}] {};
 		\node (onBoxUnit) [block, fit=(rpi) (irCamera) (microphone) (soundCard), label={[anchor=north west]south west:On-Box Sensor Unit (15)}] {};
-		\node (remoteUnit) [block, fit=(ipCamera), label={[anchor=north west]south west:Remote Sensor Unit (16)}] {};
+		\node (remoteUnit) [block, fit=(ipCamera) (rpi1), label={[anchor=north west]south west:Remote Sensor Unit (16)}] {};
 	}
 \end{document}

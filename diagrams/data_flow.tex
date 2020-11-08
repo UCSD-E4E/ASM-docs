@@ -15,21 +15,23 @@
 			block/.style={draw, rectangle},
 			every edge quotes/.append style={font=\tiny, rectangle}]{
 		\node (dataServer) [block] {Data Server (1)};
-		\node (ipCamera) [block, below left=of dataServer] {IP Camera (2)};
+		\node (rpi1) [block, below left=of dataServer] {Raspberry Pi 4 (18)};
+		\node (ipCamera) [block, below left=of rpi1] {IP Camera (2)};
 		\node (rpi) [block, below right=of dataServer] {Raspberry Pi 4 (3)};
 		\node (irCamera) [block, below right=of rpi] {Pi IR Camera (4)};
 		\node (microphone) [block, below =of rpi] {Microphone (5)};
 		\node (nano) [block, below left=of rpi] {Arduino Nano BLE Sense (6)};
 
-		\draw (dataServer) 	edge[stealth'-, "Video Stream (7)"] (ipCamera)
+		\draw (dataServer) 	edge[stealth'-, "Video Stream (7)"] (rpi1)
 					   		edge[stealth'-, "Packetized Video Stream + IMU Data (8)"] (rpi)
 			  (rpi)    		edge[stealth'-, "Video Stream (9)"] (irCamera)
 			  		   		edge[stealth'-, "Packetized IMU Data (10)"'] (nano)
 			  		   		edge[stealth'-, "Raw Audio (11)"] (microphone)
+			  (rpi1)		edge[stealth'-, "Video Stream (7)"] (ipCamera)
 		;
 
 		\node (vibeUnit) [block, fit=(nano), label={[anchor=north west]south west:Vibration Sensor Unit (12)}] {};
 		\node (onBoxUnit) [block, fit=(rpi) (irCamera) (microphone), label={[anchor=north west]south west:On-Box Sensor Unit (13)}] {};
-		\node (remoteUnit) [block, fit=(ipCamera), label={[anchor=north west]south west:Remote Sensor Unit (14)}] {};
+		\node (remoteUnit) [block, fit=(ipCamera) (rpi1), label={[anchor=north west]south west:Remote Sensor Unit (14)}] {};
 	}
 \end{document}

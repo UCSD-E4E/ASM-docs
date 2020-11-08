@@ -1,0 +1,59 @@
+\RequirePackage{shellesc}                % implement \write18
+
+\RequirePackage{pdftexcmds}              % fake \pdfshellescape so
+\makeatletter                            % standalone knows about it
+  \let\pdfshellescape\pdf@shellescape
+\makeatother
+
+\RequirePackage{luatex85}
+\documentclass[tikz, convert={outfile=\jobname.svg}]{standalone}
+\usetikzlibrary{arrows, positioning, quotes, graphs, graphdrawing, fit, topaths}
+\usegdlibrary{force}
+
+\begin{document}
+	\tikz [ node distance=2cm,
+			block/.style={draw, rectangle},
+			every edge quotes/.append style={font=\tiny, rectangle}]{
+		\node (ac1) [block] {AC};
+		\node (dataServer) [block, right=of ac1] {Data Server (1)};
+		\draw (ac1) edge[-stealth', "120V AC"] (dataServer);
+
+		\node (ac2) [block, below=of ac1] {AC};
+		\node (router) [block, right=of ac2] {Router (8)};
+		\draw (ac2) edge[-stealth', "120V AC"] (router);
+
+		\node (ac3) [block, below=of ac2] {AC};
+		\node (5v1) [block, right=of ac3] {5V USB Power Supply};
+		\node (rpi1) [block, right=of 5v1] {Raspberry Pi 4 (18)};
+		\node (PoE) [block, below=of 5v1] {PoE Injector};
+		\node (ipCamera) [block, right=of PoE] {IP Camera (2)};
+		\draw (ac3) edge[-stealth', "120V AC"] (5v1)
+			  		edge[-stealth', "120V AC"] (PoE)
+			  (5v1) edge[-stealth', "5V 3A DC"] (rpi1)
+			  (PoE) edge[-stealth', "48V 0.5A DC"] (ipCamera)
+			  % (rpi1) edge[-stealth', "Ethernet"] (PoE)
+		;
+
+		\node (ac4) [block, below=8cm of ac3] {AC};
+		\node (5v2) [block, right=of ac4] {5V USB Power Supply};
+		\node (rpi) [block, right=of 5v2] {Raspberry Pi 4 (3)};
+		\node (12v1) [block, above=of rpi] {USB 12V Power Supply};
+		\node (irCamera) [block, below right=of rpi] {Pi IR Camera (4)};
+		\node (soundCard) [block, right=of rpi] {USB Sound Card (5)};
+		\node (microphone) [block, right=of 12v1] {Microphone (6)};
+		\node (nano) [block, below=4cm of rpi] {Arduino Nano BLE Sense (7)};
+		\draw (ac4) edge[-stealth', "120V AC"] (5v2)
+			  (12v1) edge[-stealth', "12V 0.6A DC"] (microphone)
+			  (5v2) edge[-stealth', "5V 3A DC"] (rpi)
+			  (rpi) edge[-stealth', "3V3 0.2A DC"] (irCamera)
+			  		edge[-stealth', "5V 0.5A DC"] (soundCard)
+			  		edge[-stealth', "5V 0.5A DC"] (nano)
+			  		edge[-stealth', "5V 2A DC"] (12v1)
+			  % (microphone) edge[-stealth', "Audio"] (soundCard)
+			  		;
+
+		\node (vibeUnit) [block, fit=(nano), label={[anchor=north west]south west:Vibration Sensor Unit (14)}] {};
+		\node (onBoxUnit) [block, fit=(rpi) (irCamera) (microphone) (soundCard) (12v1), label={[anchor=south west]north west:On-Box Sensor Unit (15)}] {};
+		\node (remoteUnit) [block, fit=(ipCamera) (rpi1) (PoE) (5v1), label={[anchor=north west]south west:Remote Sensor Unit (16)}] {};
+	}
+\end{document}
