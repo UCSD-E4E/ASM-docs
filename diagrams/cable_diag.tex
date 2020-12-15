@@ -25,13 +25,13 @@
 		\node (ac3) [block, below=of ac2] {AC};
 		\node (5v1) [block, right=of ac3] {5V USB Power Supply};
 		\node (rpi1) [block, right=of 5v1] {Raspberry Pi 4 (18)};
-		\node (PoE) [block, below=of 5v1] {PoE Injector};
-		\node (ipCamera) [block, right=of PoE] {IP Camera (2)};
+		\node (12v2) [block, below=of 5v1] {12V Power Supply};
+		\node (ipCamera) [block, right=of 12v2] {IP Camera (2)};
 		\draw (ac3) edge[-stealth', "NEMA 5-15P to NEMA 5-15R"] (5v1)
-			  		edge[-stealth', "NEMA 5-15P to NEMA 5-15R"] (PoE)
+			  		edge[-stealth', "NEMA 5-15P to NEMA 5-15R"] (12v2)
 			  (5v1) edge[-stealth', "to USB-C"] (rpi1)
-			  (PoE) edge[-stealth', "RJ45 to RJ45 over CAT6"] (ipCamera)
-			  (rpi1) edge[-stealth', "RJ45 to RJ45 over CAT6"] (PoE)
+			  (12v2) edge[-stealth', "to 6mm barrel jack"] (ipCamera)
+			  (rpi1) edge[-stealth', "RJ45 to RJ45 over CAT6"] (ipCamera)
 		;
 
 		\node (ac4) [block, below=12cm of ac3] {AC};
@@ -54,6 +54,6 @@
 
 		\node (vibeUnit) [block, fit=(nano), label={[anchor=north west]south west:Vibration Sensor Unit (14)}] {};
 		\node (onBoxUnit) [block, fit=(rpi) (irCamera) (microphone) (soundCard) (12v1), label={[anchor=south west]north west:On-Box Sensor Unit (15)}] {};
-		\node (remoteUnit) [block, fit=(ipCamera) (rpi1) (PoE) (5v1), label={[anchor=north west]south west:Remote Sensor Unit (16)}] {};
+		\node (remoteUnit) [block, fit=(ipCamera) (rpi1) (12v2) (5v1), label={[anchor=north west]south west:Remote Sensor Unit (16)}] {};
 	}
 \end{document}

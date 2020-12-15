@@ -6,3 +6,5 @@
 diagrams/cable_diag.svg
 
 *.svg
+
+.ipynb_checkpoints/
