@@ -1,0 +1,48 @@
+@startuml System Diagram
+[Data Server] as data_server
+[On-Box Sensor Unit] as on_box_sensor
+[Remote Sensor Unit] as remote_sensor_unit
+
+@enduml
+
+@startuml Deployment Diagram
+node "On-Box Sensor Node a105a7ea" as on_box_node {
+    component "ASM-rpi-node.onBoxSensorNode" as rpi_node_on_box
+    component "Pi Camera" as pi_cam
+    component "Microphone" as pi_mic
+    component "IR Lights" as ir_light
+    rpi_node_on_box <-- pi_cam : Video Data
+    rpi_node_on_box <-- pi_mic : Audio Data
+    rpi_node_on_box --> ir_light : Control
+}
+node "ASM Flipper 8124cb7c" as asmFlipper {
+    component "ASM-rpi-node.asmFlipper" as rpi_node_flipper
+    control "Flipper" as motor
+    rpi_node_flipper --> motor : Control
+}
+node "E4E Brix" as e4e_brix {
+    component "Development Data Server" as dev_server
+}
+storage "smb://e4e-nas.ucsd.edu/aye-aye-sleep-monitoring/data" as e4e_nas
+
+dev_server -> e4e_nas : Recorded Data
+dev_server <-- rpi_node_on_box : E4EB Control\nVideo RTSP\nAudio RTSP
+dev_server <-- rpi_node_flipper : E4EB Control + Data
+
+node "Remote Sensor Node 285a1fe8" as remote_node {
+    component "ASM-rpi-node.remoteSensorNode" as rpi_node_remote
+    component "IP Camera" as ip_cam
+    rpi_node_remote <-- ip_cam : Video Data
+}
+node "SDSC Server" as sdsc {
+    component "Deployment Data Server" as prod_server
+    folder "/ayeayedata" as prod_data
+    prod_server -> prod_data : Recorded Data
+}
+prod_server <-- rpi_node_remote : E4EB Control\nVideo RTSP
+
+node "Kastner ML" as kastner_ml {
+
+}
+kastner_ml <- e4e_nas : Data for Procesing
+@enduml
