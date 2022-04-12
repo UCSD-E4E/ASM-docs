@@ -7,6 +7,7 @@ Aye-aye Sleep Monitoring Project Documentation
 - https://github.com/UCSD-E4E/ASM-data-server
 - https://github.com/UCSD-E4E/ASM-motion-tracking
 - https://github.com/UCSD-E4E/ASM_protocol
+- https://github.com/UCSD-E4E/ASM-common
 
 # Getting Started
 ## Required Items
