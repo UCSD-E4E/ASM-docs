@@ -13,7 +13,7 @@ diagrams/cable_diag.svg
 *_keys.bak
 keys.yaml
 systems.yaml
-
+!whitepaper/images/*
 # Created by https://www.toptal.com/developers/gitignore/api/python,latex,eagle,visualstudiocode,windows,linux,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,latex,eagle,visualstudiocode,windows,linux,macos
 
