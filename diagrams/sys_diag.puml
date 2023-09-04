@@ -1,0 +1,26 @@
+@startuml System Diagram
+[Router] as router
+package "Remote Sensor Unit" {
+    [Raspberry Pi 4] as rpi1
+    [IP Camera] as ipCamera
+}
+[Data Server] as dataServer
+package "On-Box Sensor Unit" {
+    [Raspberry Pi 4] as rpi
+    [Pi IR Camera] as irCamera
+    [USB Sound Card] as soundCard
+    [Microphone] as microphone
+}
+package "Vibration Sensor Unit" {
+    [Arduino Nano BLE Sense] as nano
+}
+
+router <--> rpi1 : WiFi
+router <--> dataServer : Ethernet
+router <--> rpi : WiFi
+rpi <- irCamera : CSI
+rpi <--> nano : BLE
+rpi <--> soundCard : USB
+soundCard <-- microphone : Coax
+rpi1 <- ipCamera : Ethernet + PoE
+@enduml
