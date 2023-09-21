@@ -1,6 +1,8 @@
 # ASM-docs
 Aye-aye Sleep Monitoring Project Documentation
 
+This project is currently inactive.  If you are interested in contributing to this project, please contact Engineers for Exploration at e4e@ucsd.edu.
+
 ## Repositories
 - https://github.com/UCSD-E4E/ASM-nano-node
 - https://github.com/UCSD-E4E/ASM-rpi-node
